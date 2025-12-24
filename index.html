@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🎁 Christmas Surprise | Merry Christmas!</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <!--- Pink Bows --->
+      <div id="backgroundBows"></div>
+
+      <!-- Canvas for confetti -->
+      <div class="confetti-canvas" id="confettiCanvas"></div>
+
+      <!-- Stage 1: Bouncing Gift Box -->
+      <div class="gift-box" id="giftBox">
+        <div class="box">
+          <!-- RIBBON ON TOP OF THE LID -->
+
+          <!-- BOX BODY -->
+          <div class="box-body">
+            <div class="ribbon-vertical"></div>
+            <div class="ribbon-horizontal"></div>
+          </div>
+
+          <!-- BOX LID -->
+          <div class="box-lid">
+            <div class="top-ribbon vertical"></div>
+            <div class="top-ribbon horizontal"></div>
+            <div class="top-ribbon knot"></div>
+          </div>
+        </div>
+
+        <!-- ✅ MOVE INSTRUCTION HERE -->
+        <div class="instruction">
+          <p>Click to open!</p>
+          <i class="fas fa-hand-point-up"></i>
+        </div>
+      </div>
+
+      <div class="gift-glow" id="giftGlow" style="display: none"></div>
+
+      <!-- Stage 3: Surprise Elements -->
+      <div class="surprise-container" id="surpriseContainer"></div>
+
+      <!-- Stage 4: Photo Slideshow -->
+      <div class="slideshow-container" id="slideshowContainer">
+        <div class="slideshow-track" id="slideshowTrack"></div>
+        <div class="photo-counter">
+          <span id="currentCount">1</span>/<span id="totalCount">0</span>
+        </div>
+      </div>
+
+      <!-- Stage 4.5: Scattered Photos (Greeting added dynamically) -->
+      <div class="scatter-stage" id="scatterStage"></div>
+
+
+      <!-- Stage 5-6: Letters Animation -->
+      <div class="letters-container" id="lettersContainer"></div>
+
+      <!-- Final Background Effects -->
+      <div class="snowfall" id="snowfall"></div>
+
+      <!-- Audio Elements -->
+      <audio id="openSound" preload="auto">
+        <source src="sounds/openGift.mp3" type="audio/mpeg" />
+      </audio>
+    </div>
+
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+    <script src="script.js"></script>
+  </body>
+</html>

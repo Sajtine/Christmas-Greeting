@@ -1,0 +1,821 @@
+/* ===== RESET & BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ffe6e6 0%, #ffd1dc 50%, #ffb6c1 100%);
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ===== STAGE 1-2: GIFT BOX ===== */
+.gift-box {
+    position: absolute;
+    top: 50%;
+    left: -200px; /* Start off-screen left */
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+    z-index: 100;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Bouncing Animation */
+@keyframes bounceToCenter {
+    0% {
+        left: -200px;
+        top: 50%;
+    }
+    20% {
+        left: 25%;
+        top: 45%;
+    }
+    40% {
+        left: 40%;
+        top: 55%;
+    }
+    60% {
+        left: 55%;
+        top: 48%;
+    }
+    80% {
+        left: 48%;
+        top: 52%;
+    }
+    100% {
+        left: 50%;
+        top: 50%;
+    }
+}
+
+.gift-box.centered {
+    animation: bounceToCenter 2.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+/* Add this for the instruction too */
+.gift-box.bounce-complete .instruction {
+    animation: fadeInUp 0.5s forwards;
+}
+
+/* Gift Box Styling */
+/* ----------------- BOX ----------------- */
+.box {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    transform-style: preserve-3d;
+}
+
+/* Box body */
+.box-body {
+    width: 160px;
+    height: 140px;
+    background: linear-gradient(145deg, #d32f2f 0%, #b71c1c 100%);
+    border-radius: 8px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    box-shadow: 
+        0 8px 15px rgba(0, 0, 0, 0.2),
+        inset 0 -5px 10px rgba(0,0,0,0.2),
+        inset 0 5px 10px rgba(255,255,255,0.15);
+
+}
+
+/* Lid */
+/* Lid Base */
+.box-lid {
+    width: 180px;
+    height: 35px; /* slightly shorter for realism */
+    background: linear-gradient(145deg, #c62828 0%, #b71c1c 100%);
+    border-radius: 12px 12px 6px 6px; /* rounder top corners */
+    position: absolute;
+    top: -10px; /* lift lid slightly above box */
+    left: 10px;
+    box-shadow:
+        0 4px 0 rgba(0,0,0,0.2),
+        0 8px 12px rgba(0,0,0,0.15),
+        inset 0 -3px 5px rgba(0,0,0,0.2); /* adds subtle inner shadow */
+    transform-origin: bottom center; /* pivot at bottom */
+    transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 3;
+}
+
+/* Lid Open Animation */
+@keyframes lidOpen {
+    0% {
+        transform: rotateX(0deg);
+    }
+    40% {
+        transform: rotateX(-120deg) translateY(-10px); /* pop slightly upward */
+    }
+    70% {
+        transform: rotateX(-100deg) translateY(-5px); /* small bounce back */
+    }
+    100% {
+        transform: rotateX(-110deg) translateY(-8px); /* settle */
+    }
+}
+
+/* Apply animation when box is opened */
+.box.opened .box-lid {
+    animation: lidOpen 1s ease-out forwards;
+}
+
+/* Optional: add a small wobble for ribbons */
+.box.opened .top-ribbon.horizontal,
+.box.opened .top-ribbon.knot {
+    animation: lidRibbonWobble 1s ease-out forwards;
+}
+
+@keyframes lidRibbonWobble {
+    0% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-2px) rotate(2deg); }
+    50% { transform: translateY(1px) rotate(-2deg); }
+    75% { transform: translateY(-1px) rotate(1deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+}
+
+
+.box.opened .box-lid {
+    transform: translateY(-25px) rotateX(-110deg);
+}
+
+/* Ribbons */
+.ribbon-vertical {
+    position: absolute;
+    width: 18px;
+    height: 100%;
+    background: linear-gradient(to bottom, #ffd700 0%, #ffdd57 50%, #ffd700 100%);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.ribbon-horizontal {
+    position: absolute;
+    width: 100%;
+    height: 18px;
+    background: linear-gradient(to right, #ffd700 0%, #ffdd57 50%, #ffd700 100%);
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* ----------------- REALISTIC BOW ----------------- */
+/* ===== REALISTIC LID RIBBON ===== */
+/* ===== TOP OF LID RIBBON ===== */
+/* ===== RIBBON ON TOP OF LID ===== */
+/* ===== RIBBON ON TOP OF LID ===== */
+/* TOP RIBBONS INSIDE LID */
+.box-lid .top-ribbon {
+    position: absolute;
+    background: linear-gradient(135deg, #f3c969 0%, #e2ab3f 45%, #c9952b 100%);
+    border-radius: 2px;
+    z-index: 4;
+}
+
+/* Vertical ribbon runs along lid center */
+.box-lid .top-ribbon.vertical {
+    width: 12px;
+    height: 40px;
+    left: 50%;
+    top: 0; /* start from top of lid */
+    transform: translateX(-50%);
+}
+
+/* Horizontal ribbon across lid */
+.box-lid .top-ribbon.horizontal {
+    width: 100%;
+    height: 12px;
+    left: 0;
+    top: 14px; /* slightly below top */
+}
+
+/* Knot on lid */
+.box-lid .top-ribbon.knot {
+    width: 16px;
+    height: 16px;
+    left: 50%;
+    top: 14px;
+    transform: translate(-50%, -50%) rotate(45deg);
+    background: linear-gradient(135deg, #e2ab3f 0%, #b8831e 100%);
+    border-radius: 3px;
+}
+
+
+
+/* VERTICAL RIBBON ON LID */
+.box-lid::before {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 40px;
+    background: linear-gradient(135deg, #f3c969 0%, #e2ab3f 45%, #c9952b 100%);
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    border-radius: 2px;
+    z-index: 1;
+}
+
+
+/* ===== UNIFIED SOFT GLOW PULSE (after bounce complete) ===== */
+@keyframes softGlowPulse {
+    0%, 100% {
+        box-shadow: 
+            0 10px 20px rgba(0, 0, 0, 0.1),
+            inset 0 -5px 10px rgba(0, 0, 0, 0.2),
+            inset 0 5px 10px rgba(255, 255, 255, 0.3),
+            0 0 20px rgba(255, 215, 0, 0.4),
+            0 0 40px rgba(255, 187, 0, 0.2);
+    }
+    50% {
+        box-shadow: 
+            0 10px 20px rgba(0, 0, 0, 0.1),
+            inset 0 -5px 10px rgba(0, 0, 0, 0.2),
+            inset 0 5px 10px rgba(255, 255, 255, 0.3),
+            0 0 35px rgba(255, 215, 0, 0.7),
+            0 0 70px rgba(255, 187, 0, 0.4),
+            0 0 100px rgba(255, 215, 0, 0.2);
+    }
+}
+
+.gift-box.bounce-complete .box-body {
+    animation: softGlowPulse 3s ease-in-out infinite;
+}
+
+.gift-box.bounce-complete .ribbon-vertical,
+.gift-box.bounce-complete .ribbon-horizontal {
+    animation: softGlowPulse 3s ease-in-out infinite;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+}
+
+.gift-box.bounce-complete .bow-center {
+    animation: softGlowPulse 3s ease-in-out infinite;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.9);
+}
+
+/* Instruction */
+.instruction {
+    position: absolute;
+    bottom: -80px;                  /* Base position — we'll adjust per screen */
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: #e63946;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    width: 100%;
+    max-width: 300px;               /* Prevents it from stretching too wide */
+}
+
+.instruction p {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;              /* Base size */
+    line-height: 1.4;
+}
+
+.gift-box.bounce-complete .instruction {
+    animation: fadeInUp 0.5s forwards;
+    animation-delay: 0.2s;
+}
+
+.instruction i {
+    display: block;
+    font-size: 36px;                /* Base hand size */
+    margin: 0 auto;
+    animation: bouncePoint 1.2s infinite alternate;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@keyframes bouncePoint {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-10px);
+    }
+}
+
+/* Gift Box golden sparkle */
+.sparkles {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    z-index: 101;
+}
+
+.sparkle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle, #ffff00, #ffd700); /* Brighter center */
+    border-radius: 50%;
+    box-shadow: 0 0 15px #ffd700, 0 0 25px #ffed4e;
+    opacity: 0;
+}
+
+@keyframes sparkleBurst {
+    0% {
+        opacity: 0;
+        transform: translate(0, 0) scale(0);
+    }
+    30% {
+        opacity: 1;
+        transform: translate(var(--dx), var(--dy)) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--dx2), var(--dy2)) scale(0);
+    }
+}
+
+/* ===== STAGE 3: SURPRISE ELEMENTS ===== */
+.surprise-container, .confetti-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 50;
+}
+
+/* Balloons */
+.balloon {
+    position: absolute;
+    width: 60px;
+    height: 80px;
+    border-radius: 50%;
+    bottom: -100px;
+    z-index: 51;
+    opacity: 0;
+}
+
+.balloon::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.7);
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.balloon.red { background: radial-gradient(circle at 30% 30%, #ff6b6b, #e63946); }
+.balloon.green { background: radial-gradient(circle at 30% 30%, #52b788, #2d6a4f); }
+.balloon.gold { background: radial-gradient(circle at 30% 30%, #ffd166, #e9c46a); }
+.balloon.blue { background: radial-gradient(circle at 30% 30%, #4cc9f0, #4361ee); }
+.balloon.purple { background: radial-gradient(circle at 30% 30%, #9d4edd, #560bad); }
+
+/* Confetti */
+/* ===== UPDATED PLASTIC SHAPE CONFETTI ===== */
+.confetti {
+    position: absolute;
+    width: 14px; /* Slightly bigger looks better for shapes */
+    height: 14px;
+    z-index: 52;
+    pointer-events: none;
+    /* This gradient creates the "plastic reflection" look on the shapes */
+    background-image: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 60%);
+    background-blend-mode: overlay;
+
+    /* PERFORMANCE FIXES */
+    will-change: transform, opacity; /* Tells the browser to optimize this element */
+    backface-visibility: hidden;    /* Removes flickering during 3D rotations */
+    transform-style: preserve-3d;   /* Smoother 3D rendering */
+}
+
+.confetti.star {
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.confetti.circle {
+    border-radius: 50%;
+}
+
+.confetti.triangle {
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+/* The Glitter Physics Animation */
+@keyframes glitterFall {
+    0% {
+        transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg) scale(0);
+        opacity: 1;
+    }
+    15% {
+        /* Initial burst up and out */
+        transform: translate3d(var(--x-up), var(--y-up), 0) rotateX(180deg) rotateY(90deg) scale(1.2);
+        filter: brightness(1.8);
+    }
+    100% {
+        /* Fluttering fall down */
+        transform: translate3d(var(--x-final), 100vh, 0) rotateX(1200deg) rotateY(600deg) scale(1);
+        opacity: 0;
+    }
+}
+
+/* ===== STAGE 4: PHOTO SLIDESHOW ===== */
+.slideshow-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 1000px;
+    height: 60vh;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 80;
+}
+
+.slideshow-container.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.slideshow-track {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    position: relative;
+}
+
+.photo-frame {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.photo-frame.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.photo-frame img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    border-radius: 15px;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.2),
+        0 0 0 10px #ffffff,
+        0 0 0 15px #e63946;
+}
+
+.photo-counter {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #e63946;
+    font-size: 1.2rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px 20px;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Scatter Image */
+/* Scatter stage container */
+/* ===== SCATTER STAGE ===== */
+.scatter-stage {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Full viewport height */
+  overflow: visible;
+}
+
+/* ===== ENHANCED GREETING ===== */
+/* ===== GREETING APPEAR ANIMATION ===== */
+.enhanced-greeting {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  opacity: 0;
+  transition: opacity 1.2s ease, transform 1.2s ease;
+
+  text-align: center;
+  z-index: 30;
+
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+
+.enhanced-greeting.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.greeting-main {
+  font-family: 'Mountains of Christmas', cursive;
+  font-size: clamp(3rem, 9vw, 5rem);
+  color: #e63946;
+
+  text-shadow:
+    0 0 10px rgba(255, 255, 255, 0.8),
+    0 0 25px rgba(230, 57, 70, 0.6),
+    0 0 40px rgba(255, 215, 0, 0.5);
+}
+
+.enhanced-greeting.show .greeting-main {
+  animation: pulse 2.6s ease-in-out infinite alternate;
+}
+
+
+.greeting-sub {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  color: #1b4332; /* darker green for contrast */
+  font-weight: 600;
+  margin-top: 15px;
+  opacity: 0.95;
+  text-shadow: 1px 1px 5px rgba(255,255,255,0.3); /* subtle glow */
+}
+
+@keyframes pulse {
+  from { transform: scale(1); text-shadow: 2px 2px 10px rgba(255,215,0,0.5); }
+  to { transform: scale(1.05); text-shadow: 4px 4px 20px rgba(255,215,0,0.8); }
+}
+
+
+
+/* ===== SCATTERED PHOTOS ===== */
+.scatter-stage img {
+  position: absolute;
+  width: auto; /* Will be set by JS */
+  height: auto;
+  opacity: 0;
+  transition: opacity 1s ease, transform 1s ease;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  border: 4px solid white;
+  z-index: 5;
+}
+
+
+/* Responsive: single photo on mobile */
+@media (max-width: 768px) {
+    .carousel-inner {
+        width: 100%;
+        animation-duration: 20s; /* Faster on mobile */
+    }
+    .carousel-slide {
+        width: 100%;
+    }
+}
+
+/* ===== STAGE 5-6: LETTERS ANIMATION ===== */
+.letters-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 90;
+}
+
+.letter {
+    position: absolute;
+    font-family: 'Mountains of Christmas', cursive;
+    font-size: 5rem;
+    font-weight: 700;
+    opacity: 0;
+    z-index: 91;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.letter.merry { color: #e63946; }
+.letter.christmas { color: #2d6a4f; }
+
+/* Letter Formation Animation */
+@keyframes flyIn {
+    0% {
+        opacity: 0;
+        transform: translate(var(--startX), var(--startY)) rotate(var(--startRotate)) scale(0);
+    }
+    70% {
+        opacity: 1;
+        transform: translate(var(--midX), var(--midY)) rotate(var(--midRotate)) scale(1.2);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(0, 0) rotate(0) scale(1);
+    }
+}
+
+.letter.forming {
+    animation: flyIn 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+/* Final Formation */
+.letter.formed {
+    opacity: 1;
+    transform: translate(0, 0) !important;
+}
+
+/* ===== FINAL EFFECTS ===== */
+.snowfall {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
+}
+
+.snowflake {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    filter: blur(1px);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+/* ===== GIFT BOX RESPONSIVE ADJUSTMENTS ===== */
+@media (max-width: 768px) {
+    .gift-box {
+        width: 140px;
+        height: 140px;
+    }
+
+    .box-body {
+        width: 120px;
+        height: 100px;
+        top: 20px;
+        left: 10px;
+    }
+
+    .box-lid {
+        width: 140px;
+        height: 28px;
+        top: -8px;
+        left: 10px;
+    }
+
+    .ribbon-vertical, .ribbon-horizontal {
+        width: 10px;
+        height: 100%;
+    }
+
+    .box-lid .top-ribbon.vertical {
+        width: 10px;
+        height: 35px;
+        top: 0;
+    }
+
+    .box-lid .top-ribbon.horizontal {
+        height: 10px;
+        top: 12px;
+    }
+
+    .box-lid .top-ribbon.knot {
+        width: 14px;
+        height: 14px;
+        top: 12px;
+    }
+
+    .instruction {
+        bottom: -100px;
+        max-width: 200px;
+    }
+
+    .instruction p {
+        font-size: 0.95rem;
+    }
+
+    .instruction i {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gift-box {
+        width: 120px;
+        height: 120px;
+    }
+
+    .box-body {
+        width: 90px;
+        height: 90px;
+        top: 15px;
+        left: 15px;
+    }
+
+    .box-lid {
+        width: 110px;
+        height: 25px;
+        top: -6px;
+        left: 5px;
+    }
+
+    .ribbon-vertical, .ribbon-horizontal {
+        width: 8px;
+    }
+
+    .box-lid .top-ribbon.vertical {
+        width: 8px;
+        height: 30px;
+    }
+
+    .box-lid .top-ribbon.horizontal {
+        height: 8px;
+        top: 10px;
+    }
+
+    .box-lid .top-ribbon.knot {
+        width: 12px;
+        height: 12px;
+        top: 10px;
+    }
+
+    .instruction {
+        bottom: -90px;
+        max-width: 180px;
+    }
+
+    .instruction p {
+        font-size: 0.9rem;
+    }
+
+    .instruction i {
+        font-size: 24px;
+    }
+}
+
+
+
+/* Bow */
+#backgroundBows {
+  position: fixed;       /* stays in background */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;  /* clicks pass through */
+  z-index: 0;            /* behind all other content */
+}
+
+.bg-bow {
+  position: absolute;
+  width: 50px;           /* initial size, can be scaled in JS */
+  height: auto;
+  transition: transform 5s linear; /* smooth floating */
+}
+
+
+/* TS Particles */
+#confettiContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  background: transparent !important;
+}
